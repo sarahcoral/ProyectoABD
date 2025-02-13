@@ -2,7 +2,7 @@ def load_db():
     import os
     import requests
     
-    #file_path = os.path.join(os.getcwd(),r"linkedindatabase.db")
+    #file_path = Path.cwd(),r"linkedindatabase.db")
     file_path = r"linkedindatabase.db"
     
     if not os.path.exists(file_path):
