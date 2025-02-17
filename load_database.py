@@ -15,7 +15,6 @@ def load_db(given_project_folder=None):
     if config_path.exists():
         with open(config_path, "r", encoding="utf-8") as file:
             local_config  = json.load(file)
-            print('Local configuration file loaded succesfully')
     else:
         raise FileNotFoundError(f"Error: {config_path} not found")
     
