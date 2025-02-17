@@ -18,13 +18,15 @@ def load_to_db(file_path:Path, name:str, conn: sqlite3.Connection,excel:bool=Fal
 
 
 # Set the file paths
-project_folder = Path.cwd().parent
+project_folder = Path.cwd()
+print(f"Project folder set to {project_folder} for sqliteDBsetup.py")
 linkedindata_path = project_folder / "linkedindata"
 
 
 #create or open linkedindatabase.db, connect to it and create a cursor object
 database_file_path = project_folder / "database" / "linkedindatabase.db"
-conn = sqlite3.connect(database_file_path)
+print(f"Database folder path set to {database_file_path} for sqliteDBsetup.py")
+conn = sqlite3.connect(str(database_file_path))
 cur = conn.cursor()
 print("Opened database successfully")
 

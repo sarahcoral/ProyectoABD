@@ -9,7 +9,8 @@ from pathlib import Path
 
 
 #SET PROJECT FOLDER MAIN DIRECTORY
-project_folder = Path.cwd().parent
+project_folder = Path.cwd()
+print(f"Project folder set to {project_folder} for numerical_data_cleanup.py")
 
 
 #DATABASE CONNECTION

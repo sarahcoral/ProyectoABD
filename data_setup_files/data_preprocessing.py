@@ -7,7 +7,15 @@ from pathlib import Path
 
 
 # Load parent directory config
-config_path = Path.cwd().parent / "local_setup_config.json"
+config_path_v1= Path.cwd().parent / "local_setup_config.json"
+config_path_v2 = Path.cwd() / "local_setup_config.json"
+if config_path_v1.exists():
+    config_path = config_path_v1
+elif config_path_v2.exists():
+    config_path = config_path_v2
+else:
+    raise FileNotFoundError(f"Error: local_setup_config.json not found in project directory")
+
 
 # Load local config file
 if config_path.exists():
@@ -19,10 +27,11 @@ else:
 
 # Set parent folder
 project_folder = Path(local_config["parent_folder"]).resolve()
-
+#print(f"Project folder set to {project_folder} for data_preprocessing.py")
 
 # Set the file paths
-project_folder = Path.cwd().parent
+project_folder = Path.cwd()
+print(f"Project folder set to {project_folder} for data_preprocessing.py")
 output_path = project_folder / "linkedindata"
 postings_file_path = output_path / "postings.csv"
 combined_file_path = output_path / "combined_postings.xlsx"
@@ -81,9 +90,11 @@ combined_df.to_excel(combined_file_path, index=False)
 print(f"Combined file has been saved as {output_file}.")
 
 #Delete all parts
+n=1
 for fp in file_paths:
     if fp.exists():
         fp.unlink()
-        print("deleted temporal 'postings' partitions")
+        print(f"deleted temporal 'postings' partition {n}")
+    n+=1
 
 
