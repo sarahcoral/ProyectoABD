@@ -24,8 +24,11 @@ linkedindata_path = project_folder / "linkedindata"
 
 
 #create or open linkedindatabase.db, connect to it and create a cursor object
+database_folder_path = project_folder / "database"
+database_folder_path.mkdir(exist_ok=True)
+print(f"Database folder path set to {database_folder_path} for sqliteDBsetup.py")
+
 database_file_path = project_folder / "database" / "linkedindatabase.db"
-print(f"Database folder path set to {database_file_path} for sqliteDBsetup.py")
 conn = sqlite3.connect(str(database_file_path))
 cur = conn.cursor()
 print("Opened database successfully")
