@@ -1,0 +1,1477 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ANÁLISIS DESCRIPTIVO &#8212; Linkedin Job Postings Data Analysis</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'visualization_notebooks/descriptive_analysis';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ANÁLISIS EXPLORATORIO" href="exploratory_analysis.html" />
+    <link rel="prev" title="TRATAMIENTO DE DATOS" href="summary_data_processing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/page_logo.jpg" class="logo__image only-light" alt="Linkedin Job Postings Data Analysis - Home"/>
+    <img src="../_static/page_logo.jpg" class="logo__image only-dark pst-js-only" alt="Linkedin Job Postings Data Analysis - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Análisis del Mercado Laboral: ofertas laborales en Linkedin 2023 y 2024
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="load_database.html">CARGAR BASE DE DATOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="summary_data_processing.html">TRATAMIENTO DE DATOS</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ANÁLISIS DESCRIPTIVO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">ANÁLISIS EXPLORATORIO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="predictive_analysis.html">ANÁLISIS PREDICTIVO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conclusions.html">Conclusiones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliografía</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fvisualization_notebooks/descriptive_analysis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/visualization_notebooks/descriptive_analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ANÁLISIS DESCRIPTIVO</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-estadistico-basico">Análisis Estadístico Básico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rango-salarial">Rango salarial</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medidas-de-centralizacion">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medidas-de-dispersion">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-intercuartilico">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion">Visualización</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visitas">Visitas</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Visualización</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicaciones-por-puesto">Aplicaciones por puesto</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Visualización</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duracion-de-la-publicacion">Duración de la publicación</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Visualización</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-atributos-cualitativos">Análisis de atributos cualitativos</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-descriptivo">
+<h1>ANÁLISIS DESCRIPTIVO<a class="headerlink" href="#analisis-descriptivo" title="Link to this heading">#</a></h1>
+<p>A continuación se presenta una descripción y visualización de los datos</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORTS</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
+
+<span class="c1"># SET PROJECT FOLDER</span>
+<span class="n">project_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="c1"># LOAD LOCAL_SETUP_CONFIG FILE</span>
+<span class="n">config_path</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;local_setup_config.json&quot;</span>
+<span class="k">if</span> <span class="n">config_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">local_config</span>  <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Local configuration file loaded succesfully&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">config_path</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+
+<span class="c1"># set run_local</span>
+<span class="n">run_local</span> <span class="o">=</span> <span class="n">local_config</span><span class="p">[</span><span class="s2">&quot;run_local&quot;</span><span class="p">]</span>
+
+<span class="c1"># MODULE PATHS</span>
+<span class="n">scripts_folder</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;Scripts&quot;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">scripts_folder</span><span class="p">))</span>
+
+<span class="c1"># MODULE IMPORTS</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">test_script</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">load_database</span>
+
+<span class="c1"># LOAD DATABASE</span>
+<span class="n">load_database</span><span class="o">.</span><span class="n">load_db</span><span class="p">(</span><span class="n">project_folder</span><span class="p">)</span>
+
+<span class="c1"># DATABASE CONNECTION</span>
+<span class="k">if</span> <span class="n">run_local</span><span class="p">:</span>
+    <span class="n">linkedindatabase_path</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;database&quot;</span> <span class="o">/</span> <span class="s2">&quot;linkedindatabase.db&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">linkedindatabase_path</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;database&quot;</span> <span class="o">/</span> <span class="s2">&quot;linkedindatabase.db&quot;</span>
+
+<span class="k">if</span> <span class="n">linkedindatabase_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">linkedindatabase_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Opened database successfully&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">linkedindatabase_path</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#DATAFRAMES CREATION</span>
+
+<span class="c1">#numerical data</span>
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM clean_numerical_postings&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;max_salary&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">10000000</span><span class="p">]</span>
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;min_salary&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">10000000</span><span class="p">]</span>
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">10000000</span><span class="p">]</span>
+
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;max_salary&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;min_salary&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">df_num</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">]</span>
+
+<span class="c1">#postings</span>
+<span class="n">df_postings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM postings&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="c1">#companies</span>
+<span class="n">df_companies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM companies&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="c1">#industries</span>
+<span class="n">df_industries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM industries&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="c1">#job industries</span>
+<span class="n">df_job_industries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM job_industries&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="c1">#skills</span>
+<span class="n">df_skills</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM skills&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+
+<span class="c1">#job skills</span>
+<span class="n">df_job_skills</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM job_skills&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#FUNCTIONS</span>
+
+<span class="c1">#Convert dict to Markdown table</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dict_to_markdown</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">headers</span><span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+    <span class="n">separator</span> <span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;---&quot;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())))):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">])</span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">headers</span><span class="p">,</span> <span class="n">separator</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">)</span>
+
+<span class="c1"># Calcular coef. de asimetría de cada columna</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">asim</span><span class="p">(</span><span class="n">col</span><span class="p">):</span>
+    <span class="c1"># Calculamos la media de la columna</span>
+    <span class="n">media</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="c1"># Calculamos la desviacion estandar</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+    <span class="c1"># Calculamos el 3er momento alrededor del centro</span>
+    <span class="n">momento_3</span> <span class="o">=</span> <span class="p">((</span><span class="n">col</span> <span class="o">-</span> <span class="n">media</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="n">asim</span> <span class="o">=</span> <span class="n">momento_3</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">std</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">asim</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="analisis-estadistico-basico">
+<h2>Análisis Estadístico Básico<a class="headerlink" href="#analisis-estadistico-basico" title="Link to this heading">#</a></h2>
+<p>se realiza un análisis estadístico básico para los siguientes atributos de cada publicación de trabajo:</p>
+<ul class="simple">
+<li><p>Rango Salarial ofrecido para el puesto</p></li>
+<li><p>Número de vistas</p></li>
+<li><p>Número de aplicaciones recibidas</p></li>
+<li><p>Duración de la publicación</p></li>
+</ul>
+<p>se visualizan algunas medidas de centralización y de dispersión</p>
+<section id="rango-salarial">
+<h3>Rango salarial<a class="headerlink" href="#rango-salarial" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nor_salary_insights</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+<span class="n">nor_salary_insights</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">nor_salary_insights</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">nor_salary_insights</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">:</span> <span class="s1">&#39;salary&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;normalized_salary&#39;</span>
+
+<span class="n">max_salary_insights</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;max_salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+<span class="n">max_salary_insights</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;max_salary&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">max_salary_insights</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;max_salary&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">max_salary_insights</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;max_salary&#39;</span><span class="p">:</span> <span class="s1">&#39;salary&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;max_salary&#39;</span>
+
+<span class="n">min_salary_insights</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;min_salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+<span class="n">min_salary_insights</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;min_salary&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">min_salary_insights</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;min_salary&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">min_salary_insights</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;min_salary&#39;</span><span class="p">:</span> <span class="s1">&#39;salary&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;min_salary&#39;</span>
+
+<span class="n">salary_combined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">nor_salary_insights</span><span class="p">,</span> <span class="n">max_salary_insights</span><span class="p">,</span> <span class="n">min_salary_insights</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="medidas-de-centralizacion">
+<h4>Medidas de Centralización<a class="headerlink" href="#medidas-de-centralizacion" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#mean salary</span>
+
+<span class="n">mean_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#median salary</span>
+
+<span class="n">median_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">median_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">median_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+
+<span class="c1">#mode salary</span>
+
+<span class="n">mode_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span>
+<span class="n">mode_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span>
+<span class="n">mode_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span>
+
+
+<span class="n">cent_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Medida&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Promedio&#39;</span><span class="p">,</span> <span class="s1">&#39;Mediana&#39;</span><span class="p">,</span> <span class="s1">&#39;Moda&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salario medio&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">mean_salary</span><span class="p">),</span> <span class="n">median_salary</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mode_salary</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span>
+    <span class="s1">&#39;Salario máximo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">mean_salary_max</span><span class="p">),</span> <span class="n">median_salary_max</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mode_salary_max</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span>
+    <span class="s1">&#39;Salario mínimo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">mean_salary_min</span><span class="p">),</span> <span class="n">median_salary_min</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mode_salary_min</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+<span class="p">}</span>
+
+<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_markdown</span><span class="p">(</span><span class="n">cent_data</span><span class="p">)</span>
+
+
+
+<span class="c1"># Display Markdown table</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="medidas-de-dispersion">
+<h4>Medidas de Dispersión<a class="headerlink" href="#medidas-de-dispersion" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#varianza</span>
+<span class="n">var_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">var_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">var_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+
+<span class="c1">#desviacion estandar</span>
+<span class="n">std_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">std_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">std_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="c1">#max</span>
+<span class="n">max_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">max_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">max_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="c1">#min</span>
+<span class="n">min_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">min_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">min_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="c1">#rango</span>
+<span class="n">range_salary</span> <span class="o">=</span> <span class="n">max_salary</span> <span class="o">-</span> <span class="n">min_salary</span>
+<span class="n">range_salary_max</span> <span class="o">=</span> <span class="n">max_salary_max</span> <span class="o">-</span> <span class="n">min_salary_max</span>
+<span class="n">range_salary_min</span> <span class="o">=</span> <span class="n">max_salary_min</span> <span class="o">-</span> <span class="n">min_salary_min</span>
+
+<span class="c1">#coef asimetria</span>
+<span class="n">asim_salary</span> <span class="o">=</span> <span class="n">asim</span><span class="p">(</span><span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+<span class="n">asim_salary_max</span> <span class="o">=</span> <span class="n">asim</span><span class="p">(</span><span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+<span class="n">asim_salary_min</span> <span class="o">=</span> <span class="n">asim</span><span class="p">(</span><span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+
+<span class="c1">#curtosis</span>
+<span class="n">kurt_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+<span class="n">kurt_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+<span class="n">kurt_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+
+<span class="n">disp_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Medida&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Varianza&#39;</span><span class="p">,</span> <span class="s1">&#39;Desviación Estándar&#39;</span><span class="p">,</span> <span class="s1">&#39;Rango&#39;</span><span class="p">,</span> <span class="s1">&#39;Coeficiente de Asimetría&#39;</span><span class="p">,</span> <span class="s1">&#39;Curtosis&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salario medio&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">var_salary</span><span class="p">,</span> <span class="n">std_salary</span><span class="p">,</span> <span class="p">(</span><span class="n">min_salary</span><span class="p">,</span><span class="n">max_salary</span><span class="p">),</span> <span class="n">asim_salary</span><span class="p">,</span> <span class="n">kurt_salary</span><span class="p">],</span>
+    <span class="s1">&#39;Salario máximo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">var_salary_max</span><span class="p">,</span> <span class="n">std_salary_max</span><span class="p">,</span> <span class="p">(</span><span class="n">min_salary_max</span><span class="p">,</span><span class="n">max_salary_max</span><span class="p">),</span> <span class="n">asim_salary_max</span><span class="p">,</span> <span class="n">kurt_salary_max</span><span class="p">],</span>
+    <span class="s1">&#39;Salario mínimo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">var_salary_min</span><span class="p">,</span> <span class="n">std_salary_min</span><span class="p">,</span> <span class="p">(</span><span class="n">min_salary_min</span><span class="p">,</span><span class="n">max_salary_min</span><span class="p">),</span> <span class="n">asim_salary_min</span><span class="p">,</span> <span class="n">kurt_salary_min</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_markdown</span><span class="p">(</span><span class="n">disp_data</span><span class="p">)</span>
+
+
+
+<span class="c1"># Display Markdown table</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="analisis-intercuartilico">
+<h4>Análisis Intercuartílico<a class="headerlink" href="#analisis-intercuartilico" title="Link to this heading">#</a></h4>
+</section>
+<section id="visualizacion">
+<h4>Visualización<a class="headerlink" href="#visualizacion" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">nor_salary_insights</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;CMRmap&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">k&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Valor (en dólares)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de salarios promedio&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los salarios tienden a concentrarse en valores bajos y medianos, con pocas ofertas de trabajo que superan los 400k dólares.
+Hay algunos valores extremos en la parte derecha, lo que indica que existen salarios significativamente más altos, pero en menor cantidad.
+La distribución sugiere que el mercado laboral tiene una gran cantidad de ofertas con salarios relativamente bajos, mientras que los salarios más altos son menos frecuentes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">salary</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="c1"># Plotting the histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># (rows, columns, index)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">salary</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histograma&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frecuencia&#39;</span><span class="p">)</span>
+
+<span class="c1"># Calculate mean and quartiles</span>
+<span class="n">mean_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">salary</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">salary</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">salary</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+
+<span class="c1"># Plotting the boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">salary</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de caja&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+
+<span class="c1"># Annotate the mean and quartile values on the boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">mean_value</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Promedio: </span><span class="si">{</span><span class="n">mean_value</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">q1</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Q1: </span><span class="si">{</span><span class="n">q1</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">q3</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Q3: </span><span class="si">{</span><span class="n">q3</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>El histograma sugiere que la mayoría de los salarios se concentran en un rango específico, pero hay presencia de valores extremos.
+El diagrama de caja confirma la presencia de valores atípicos y muestra la mediana y los cuartiles.</p>
+</section>
+</section>
+<section id="visitas">
+<h3>Visitas<a class="headerlink" href="#visitas" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">views</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;views&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h4>Medidas de Centralización<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#mean views</span>
+<span class="n">mean_views</span> <span class="o">=</span> <span class="n">views</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#median views</span>
+<span class="n">median_views</span> <span class="o">=</span> <span class="n">views</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+
+<span class="c1">#mode views</span>
+<span class="n">mode_views</span> <span class="o">=</span> <span class="n">views</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span>
+
+<span class="n">cent_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Medida&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Promedio&#39;</span><span class="p">,</span> <span class="s1">&#39;Mediana&#39;</span><span class="p">,</span> <span class="s1">&#39;Moda&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Número de vistas&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">mean_views</span><span class="p">,</span> <span class="n">median_views</span><span class="p">,</span> <span class="n">mode_views</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+<span class="p">}</span>
+
+<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_markdown</span><span class="p">(</span><span class="n">cent_data</span><span class="p">)</span>
+
+<span class="c1"># Display Markdown table</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p>| Medida | Número de vistas |
+| — | — |
+| Promedio | 21.301341980887983 |
+| Mediana | 5.0 |
+| Moda | 4.0 |</p>
+</div>
+</div>
+</section>
+<section id="id2">
+<h4>Medidas de Dispersión<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#varianza</span>
+<span class="n">var_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">var_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="n">var_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+
+<span class="c1">#desviacion estandar</span>
+<span class="n">std_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">std_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">std_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+<span class="c1">#max</span>
+<span class="n">max_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">max_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">max_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="c1">#min</span>
+<span class="n">min_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">min_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">min_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="c1">#rango</span>
+<span class="n">range_salary</span> <span class="o">=</span> <span class="n">max_salary</span> <span class="o">-</span> <span class="n">min_salary</span>
+<span class="n">range_salary_max</span> <span class="o">=</span> <span class="n">max_salary_max</span> <span class="o">-</span> <span class="n">min_salary_max</span>
+<span class="n">range_salary_min</span> <span class="o">=</span> <span class="n">max_salary_min</span> <span class="o">-</span> <span class="n">min_salary_min</span>
+
+<span class="c1">#coef asimetria</span>
+<span class="n">asim_salary</span> <span class="o">=</span> <span class="n">asim</span><span class="p">(</span><span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+<span class="n">asim_salary_max</span> <span class="o">=</span> <span class="n">asim</span><span class="p">(</span><span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+<span class="n">asim_salary_min</span> <span class="o">=</span> <span class="n">asim</span><span class="p">(</span><span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+
+<span class="c1">#curtosis</span>
+<span class="n">kurt_salary</span> <span class="o">=</span> <span class="n">nor_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+<span class="n">kurt_salary_max</span> <span class="o">=</span> <span class="n">max_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+<span class="n">kurt_salary_min</span> <span class="o">=</span> <span class="n">min_salary_insights</span><span class="p">[</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">kurt</span><span class="p">()</span>
+
+<span class="n">disp_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Medida&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Varianza&#39;</span><span class="p">,</span> <span class="s1">&#39;Desviación Estándar&#39;</span><span class="p">,</span> <span class="s1">&#39;Rango&#39;</span><span class="p">,</span> <span class="s1">&#39;Coeficiente de Asimetría&#39;</span><span class="p">,</span> <span class="s1">&#39;Curtosis&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Salario medio&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">var_salary</span><span class="p">,</span> <span class="n">std_salary</span><span class="p">,</span> <span class="p">(</span><span class="n">min_salary</span><span class="p">,</span><span class="n">max_salary</span><span class="p">),</span> <span class="n">asim_salary</span><span class="p">,</span> <span class="n">kurt_salary</span><span class="p">],</span>
+    <span class="s1">&#39;Salario máximo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">var_salary_max</span><span class="p">,</span> <span class="n">std_salary_max</span><span class="p">,</span> <span class="p">(</span><span class="n">min_salary_max</span><span class="p">,</span><span class="n">max_salary_max</span><span class="p">),</span> <span class="n">asim_salary_max</span><span class="p">,</span> <span class="n">kurt_salary_max</span><span class="p">],</span>
+    <span class="s1">&#39;Salario mínimo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">var_salary_min</span><span class="p">,</span> <span class="n">std_salary_min</span><span class="p">,</span> <span class="p">(</span><span class="n">min_salary_min</span><span class="p">,</span><span class="n">max_salary_min</span><span class="p">),</span> <span class="n">asim_salary_min</span><span class="p">,</span> <span class="n">kurt_salary_min</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_markdown</span><span class="p">(</span><span class="n">disp_data</span><span class="p">)</span>
+
+
+
+<span class="c1"># Display Markdown table</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p>| Medida | Salario medio | Salario máximo | Salario mínimo |
+| — | — | — | — |
+| Varianza | 4,402,867,037.176469 | 6,947,263,613.603562 | 2,960,661,098.6850767 |
+| Desviación Estándar | 66,354.1033936596 | 83,350.24663193003 | 54,411.95731349017 |
+| Rango | (np.float64(110.0), np.float64(2096744.0)) | (np.float64(115.0), np.float64(2339090.0)) | (np.float64(105.0), np.float64(1854398.0)) |
+| Coeficiente de Asimetría | 6.070477282081726 | 5.878229079305506 | 6.717391867253889 |
+| Curtosis | 119.15334975367024 | 92.89985031365246 | 153.63703852900244 |</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h4>Análisis Intercuartílico<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+</section>
+<section id="id4">
+<h4>Visualización<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#df_views = df_num[views]</span>
+<span class="n">df_views</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">views</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_views</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;views&#39;</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;CMRmap&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">7000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">k&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">7000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Valor (en dólares)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de vistas&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3cb7bdd3c23159be141178fa2da848d190428b16f50b5a932ca3f61c7e09d021.png" src="../_images/3cb7bdd3c23159be141178fa2da848d190428b16f50b5a932ca3f61c7e09d021.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#df_views = df_num[views]</span>
+<span class="n">df_views</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">views</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_views</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;views&#39;</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;CMRmap&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">7000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">k&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">7000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Valor (en dólares)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de vistas&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3cb7bdd3c23159be141178fa2da848d190428b16f50b5a932ca3f61c7e09d021.png" src="../_images/3cb7bdd3c23159be141178fa2da848d190428b16f50b5a932ca3f61c7e09d021.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># (rows, columns, index)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">views</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histograma&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Visitas&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frecuencia&#39;</span><span class="p">)</span>
+
+<span class="c1"># Calculate mean and quartiles</span>
+<span class="n">mean_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">views</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">views</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">views</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+
+<span class="c1"># Plotting the boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">views</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de caja&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+
+<span class="c1"># Annotate the mean and quartile values on the boxplot</span>
+<span class="c1">#plt.text(0.05, mean_value, f&#39;Promedio: {mean_value:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+<span class="c1">#plt.text(0.05, q1, f&#39;Q1: {q1:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+<span class="c1">#plt.text(0.05, q3, f&#39;Q3: {q3:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="aplicaciones-por-puesto">
+<h3>Aplicaciones por puesto<a class="headerlink" href="#aplicaciones-por-puesto" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">apps</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;applies&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id5">
+<h4>Medidas de Centralización<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#mean apps</span>
+<span class="n">mean_apps</span> <span class="o">=</span> <span class="n">apps</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#median apps</span>
+<span class="n">median_apps</span> <span class="o">=</span> <span class="n">apps</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+
+<span class="c1">#mode apps</span>
+<span class="n">mode_apps</span> <span class="o">=</span> <span class="n">apps</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span>
+
+<span class="n">cent_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Medida&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Promedio&#39;</span><span class="p">,</span> <span class="s1">&#39;Mediana&#39;</span><span class="p">,</span> <span class="s1">&#39;Moda&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Número de aplicaciones&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">mean_apps</span><span class="p">),</span> <span class="n">median_apps</span><span class="p">,</span> <span class="n">mode_apps</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+<span class="p">}</span>
+
+<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_markdown</span><span class="p">(</span><span class="n">cent_data</span><span class="p">)</span>
+
+<span class="c1"># Display Markdown table</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id6">
+<h4>Medidas de Dispersión<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+</section>
+<section id="id7">
+<h4>Análisis Intercuartílico<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+</section>
+<section id="id8">
+<h4>Visualización<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">views</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;CMRmap&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">k&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Valor (en dólares)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de salarios promedio&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># (rows, columns, index)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histograma&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Visitas&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frecuencia&#39;</span><span class="p">)</span>
+
+<span class="c1"># Calculate mean and quartiles</span>
+<span class="n">mean_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">apps</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+
+<span class="c1"># Plotting the boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">views</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de caja&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+
+<span class="c1"># Annotate the mean and quartile values on the boxplot</span>
+<span class="c1">#plt.text(0.05, mean_value, f&#39;Promedio: {mean_value:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+<span class="c1">#plt.text(0.05, q1, f&#39;Q1: {q1:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+<span class="c1">#plt.text(0.05, q3, f&#39;Q3: {q3:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="duracion-de-la-publicacion">
+<h3>Duración de la publicación<a class="headerlink" href="#duracion-de-la-publicacion" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#get job duration values</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_duration</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;closed_time&#39;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;closed_time&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_num</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_duration</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="n">df_num</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id9">
+<h4>Medidas de Centralización<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#mean duration of postings</span>
+<span class="n">mean_duration</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#median duration of postings</span>
+<span class="n">median_duration</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+
+<span class="c1">#mode duration of postings</span>
+<span class="n">mode_duration</span> <span class="o">=</span> <span class="n">duration</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span>
+
+<span class="c1">#convert unix time to days, hours, minutes</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_time</span><span class="p">(</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">days</span> <span class="o">=</span> <span class="n">duration</span><span class="o">//</span><span class="mi">86400</span>
+    <span class="n">hours</span> <span class="o">=</span> <span class="p">(</span><span class="n">duration</span><span class="o">%</span><span class="k">86400</span>)//3600
+    <span class="n">minutes</span> <span class="o">=</span> <span class="p">(</span><span class="n">duration</span><span class="o">%</span><span class="k">3600</span>)//60
+    <span class="k">return</span> <span class="n">days</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span>
+
+
+<span class="n">cent_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Medida&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Promedio&#39;</span><span class="p">,</span> <span class="s1">&#39;Mediana&#39;</span><span class="p">,</span> <span class="s1">&#39;Moda&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Duración de la publicación&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">mean_duration</span><span class="p">,</span> <span class="n">median_duration</span><span class="p">,</span> <span class="n">mode_duration</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dict_to_datetime_markdown</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">headers</span><span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+    <span class="n">separator</span> <span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;---&quot;</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())))):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="s2">&quot;| &quot;</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">convert_time</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">d</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">convert_time</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">h</span><span class="si">{</span><span class="n">convert_time</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]))[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">])</span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; |&quot;</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">headers</span><span class="p">,</span> <span class="n">separator</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">)</span>
+
+<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_datetime_markdown</span><span class="p">(</span><span class="n">cent_data</span><span class="p">)</span>
+
+<span class="c1"># Display Markdown table</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id10">
+<h4>Medidas de Dispersión<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#varianza</span>
+<span class="c1">#desviacion estandar</span>
+<span class="c1">#rango</span>
+<span class="c1">#coef asimetria</span>
+<span class="c1">#curtosis</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id11">
+<h4>Análisis Intercuartílico<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#iqr rango intercuartil</span>
+<span class="c1">#q1 25</span>
+<span class="c1">#q2 50</span>
+<span class="c1">#q3 75</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_cuartiles_iqr</span><span class="p">(</span><span class="n">columna</span><span class="p">):</span>
+    <span class="c1"># Verificamos si la columna existe en el DataFrame</span>
+    <span class="k">if</span> <span class="n">columna</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;La columna &#39;</span><span class="si">{</span><span class="n">columna</span><span class="si">}</span><span class="s2">&#39; no se encuentra en el DataFrame.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Calculamos los cuartiles</span>
+    <span class="n">Q1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">columna</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">Q2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">columna</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.50</span><span class="p">)</span>  <span class="c1"># Mediana</span>
+    <span class="n">Q3</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">columna</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+
+    <span class="c1"># Calculamos el Rango Intercuartílico (IQR)</span>
+    <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+
+    <span class="c1"># Devolvemos los resultados como un diccionario</span>
+    <span class="n">resultado</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;Q1&#39;</span><span class="p">:</span> <span class="n">Q1</span><span class="p">,</span>
+        <span class="s1">&#39;Q2&#39;</span><span class="p">:</span> <span class="n">Q2</span><span class="p">,</span>
+        <span class="s1">&#39;Q3&#39;</span><span class="p">:</span> <span class="n">Q3</span><span class="p">,</span>
+        <span class="s1">&#39;IQR&#39;</span><span class="p">:</span> <span class="n">IQR</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">resultado</span>
+
+<span class="c1"># Calcular cuartiles de cada columna</span>
+<span class="n">quarts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">quarts</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_cuartiles_iqr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Mostrar cuartiles e IQR  de todas las columnas</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cuartiles y Rango Intercuartil (IQR):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">columna</span><span class="p">,</span> <span class="n">curt</span> <span class="ow">in</span> <span class="n">curts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">columna</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> IQR = </span><span class="si">{</span><span class="n">quarts</span><span class="p">[</span><span class="n">columna</span><span class="p">][</span><span class="s1">&#39;IQR&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Q1 (25%)= </span><span class="si">{</span><span class="n">quarts</span><span class="p">[</span><span class="n">columna</span><span class="p">][</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Q2 (50%)= </span><span class="si">{</span><span class="n">quarts</span><span class="p">[</span><span class="n">columna</span><span class="p">][</span><span class="s1">&#39;Q2&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> Q3 (75%)= </span><span class="si">{</span><span class="n">quarts</span><span class="p">[</span><span class="n">columna</span><span class="p">][</span><span class="s1">&#39;Q3&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id12">
+<h4>Visualización<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">views</span><span class="p">,</span> <span class="n">jitter</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="s1">&#39;CMRmap&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">k&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Valor (en dólares)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de salarios promedio&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting the histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># (rows, columns, index)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Histograma&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Visitas&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frecuencia&#39;</span><span class="p">)</span>
+
+<span class="c1"># Calculate mean and quartiles</span>
+<span class="n">mean_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">apps</span><span class="p">)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+
+<span class="c1"># Plotting the boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">views</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Diagrama de caja&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario promedio&#39;</span><span class="p">)</span>
+
+<span class="c1"># Annotate the mean and quartile values on the boxplot</span>
+<span class="c1">#plt.text(0.05, mean_value, f&#39;Promedio: {mean_value:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+<span class="c1">#plt.text(0.05, q1, f&#39;Q1: {q1:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+<span class="c1">#plt.text(0.05, q3, f&#39;Q3: {q3:.0f}&#39;, color=&#39;blue&#39;, fontsize=10)</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="analisis-de-atributos-cualitativos">
+<h2>Análisis de atributos cualitativos<a class="headerlink" href="#analisis-de-atributos-cualitativos" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_merged</span> <span class="o">=</span> <span class="n">df_postings</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_companies</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;company_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;company_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="c1">#setting the colors</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+
+<span class="c1"># Plotting the boxplot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;company_size&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;med_salary&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_merged</span><span class="p">,</span><span class="n">palette</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de salarios por tamaño de empresa&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Tamaño de la empresa&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario medio&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>La mediana de los salarios no varía significativamente entre diferentes tamaños de empresa.
+Hay muchos valores atípicos, lo que indica que algunos empleados en empresas de cualquier tamaño pueden recibir salarios considerablemente más altos.
+Aunque se podría esperar que empresas más grandes pagaran mejor, este gráfico sugiere que la variabilidad dentro de cada grupo es alta y que el tamaño de la empresa no es necesariamente un indicador claro del salario.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experience_level_distribution</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;formatted_experience_level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+<span class="n">custom_order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Internship&#39;</span><span class="p">,</span> <span class="s1">&#39;Entry level&#39;</span><span class="p">,</span> <span class="s1">&#39;Associate&#39;</span><span class="p">,</span> <span class="s1">&#39;Mid-Senior level&#39;</span><span class="p">,</span> <span class="s1">&#39;Director&#39;</span><span class="p">,</span> <span class="s1">&#39;Executive&#39;</span><span class="p">]</span>
+
+<span class="n">experience_level_distribution</span> <span class="o">=</span> <span class="n">experience_level_distribution</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">custom_order</span><span class="p">)</span>
+
+<span class="c1">#Dict of colors for each experience level</span>
+<span class="n">experience_colors</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Entry level&#39;</span><span class="p">:</span> <span class="s1">&#39;#1c1aaf&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Associate&#39;</span><span class="p">:</span> <span class="s1">&#39;#006b3d&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mid-Senior level&#39;</span><span class="p">:</span> <span class="s1">&#39;#fdcc0c&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Director&#39;</span><span class="p">:</span> <span class="s1">&#39;#c23b21&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Not Applicable&#39;</span><span class="p">:</span> <span class="s1">&#39;#888888&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Internship&#39;</span><span class="p">:</span> <span class="s1">&#39;#0066e7&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Executive&#39;</span><span class="p">:</span> <span class="s1">&#39;#a11c0f&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># Define base colors (can be any color scheme)</span>
+<span class="n">base_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">experience_colors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">experience_level_distribution</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+
+<span class="c1"># Plotting the bar chart</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">experience_level_distribution</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">base_colors</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribución de requerimientos de experiencia laboral en las ofertas de trabajo&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Nivel de experiencia&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Número de ofertas&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>La mayoría de las ofertas de empleo están dirigidas a personas con experiencia media o en su primer empleo, lo que sugiere una alta demanda en estos niveles.
+Las oportunidades para roles directivos o ejecutivos son mucho más limitadas, lo cual es esperable, ya que estos puestos requieren más experiencia y son menos comunes.
+Las pasantías (Internship) son escasas, lo que podría indicar una menor oferta de oportunidades para estudiantes o recién graduados.
+Este patrón sugiere que las empresas buscan principalmente talento joven y personas con experiencia intermedia, mientras que los roles de alto nivel son menos accesibles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample Data</span>
+<span class="n">companies</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Google&#39;</span><span class="p">,</span> <span class="s1">&#39;Amazon&#39;</span><span class="p">,</span> <span class="s1">&#39;Microsoft&#39;</span><span class="p">]</span>
+<span class="n">job_counts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">120</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="c1"># Create a figure and axis</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Define base colors (can be any color scheme)</span>
+<span class="n">base_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#4CAF50&#39;</span><span class="p">,</span> <span class="s1">&#39;#FF9800&#39;</span><span class="p">,</span> <span class="s1">&#39;#2196F3&#39;</span><span class="p">]</span> <span class="c1"># Green, Orange, Blue</span>
+
+<span class="c1"># Create a gradient effect by layering transparent bars</span>
+<span class="n">num_layers</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># More layers = smoother gradient</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_layers</span> <span class="c1"># Increasing opacity</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">job_counts</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">companies</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">value</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_layers</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">base_colors</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+<span class="c1"># Labels &amp; Title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Company&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Job Postings&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Job Postings Per Company (Gradient Effect)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># Format Ticks</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="c1"># Add Grid</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Annotate Bars</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">job_counts</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    
+<span class="c1"># Remove Borders (Spines)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#IMPORTANTE: CERRAR LA CONEXIÓN</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./visualization_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="summary_data_processing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">TRATAMIENTO DE DATOS</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="exploratory_analysis.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ANÁLISIS EXPLORATORIO</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-estadistico-basico">Análisis Estadístico Básico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rango-salarial">Rango salarial</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medidas-de-centralizacion">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medidas-de-dispersion">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-intercuartilico">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion">Visualización</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visitas">Visitas</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Visualización</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aplicaciones-por-puesto">Aplicaciones por puesto</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Visualización</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duracion-de-la-publicacion">Duración de la publicación</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Medidas de Centralización</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Medidas de Dispersión</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Análisis Intercuartílico</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Visualización</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-atributos-cualitativos">Análisis de atributos cualitativos</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Narly Cipagauta, Karla Murillo, Sarah Coral, Stiven Sánchez
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
