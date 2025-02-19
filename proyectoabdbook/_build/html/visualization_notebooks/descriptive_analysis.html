@@ -602,13 +602,13 @@
     <span class="s1">&#39;Salario mínimo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">mean_salary_min</span><span class="p">),</span> <span class="n">median_salary_min</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">mode_salary_min</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
 <span class="p">}</span>
 
-<span class="n">markdown_table</span> <span class="o">=</span> <span class="n">dict_to_markdown</span><span class="p">(</span><span class="n">cent_data</span><span class="p">)</span>
-
-
+<span class="c1">#markdown_table = dict_to_markdown(cent_data)</span>
 
 <span class="c1"># Display Markdown table</span>
 
-<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="n">markdown_table</span><span class="p">))</span>
+<span class="c1">#display(Markdown(markdown_table))</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="s1">&#39;hi&#39;</span><span class="p">,</span> <span class="s1">&#39;there&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;DataFrame&#39;</span><span class="p">]],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Word A&#39;</span><span class="p">,</span> <span class="s1">&#39;Word B&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

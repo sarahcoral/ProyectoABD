@@ -37,8 +37,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['# IMPORTS', 'import sys', 'import json', 'from pathlib import Path', 'import sqlite3']
+['#DATAFRAME CREATION', '', '#numerical data', "df_num = pd.read_sql('SELECT * FROM clean_numerical_postings', conn)", '']
 ...
-['if linkedindatabase_path.exists():', '    conn = sqlite3.connect(linkedindatabase_path)', '    print("Opened database successfully")', 'else:', '    raise FileNotFoundError(f"Error: {linkedindatabase_path} not found")']
+["df_num = df_num[df_num['min_salary'] > 100]", "df_num = df_num[df_num['normalized_salary'] > 100]", '', '#postings', "df_postings = pd.read_sql('SELECT * FROM postings', conn)"]
 -------------------
 

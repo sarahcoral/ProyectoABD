@@ -4,9 +4,9 @@
 format: jb-article
 root: visualization_notebooks/index
 sections:
-- file: visualization_notebooks/dmarkdown
-- file: visualization_notebooks/dnotebooks
-- file: visualization_notebooks/dmarkdown-notebooks
+- file: visualization_notebooks/markdown
+- file: visualization_notebooks/notebooks
+- file: visualization_notebooks/markdown-notebooks
 - file: visualization_notebooks/load_database
 - file: visualization_notebooks/summary_data_processing
 - file: visualization_notebooks/descriptive_analysis
