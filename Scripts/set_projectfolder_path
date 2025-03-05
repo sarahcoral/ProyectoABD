@@ -1,0 +1,22 @@
+from pathlib import Path
+
+def find_project_folder_path(start_path: Path, target_folder_name: str) -> Path:
+    current_path = start_path
+    
+    # Traverse up the directory tree
+    while current_path != current_path.parent:  # While not at the root directory
+        if current_path.name == target_folder_name:
+            return current_path
+        current_path = current_path.parent
+    
+    # If we reached the root without finding the folder, return None
+    return None
+
+start_path = Path.cwd()
+target_folder_name = 'ProyectoABD'
+result = find_project_folder_path(start_path, target_folder_name)
+
+if result:
+    print(f"Found the folder at: {result}")
+else:
+    print(f"Could not find the folder '{target_folder_name}' in the directory tree.")
