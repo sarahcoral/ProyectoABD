@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'visualization_notebooks/predictive_analysis';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Conclusiones" href="conclusions.html" />
+    <link rel="next" title="CONCLUSIONES" href="conclusions.html" />
     <link rel="prev" title="ANÁLISIS EXPLORATORIO" href="exploratory_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -169,7 +169,6 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Jupyter Notebook files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
 <li class="toctree-l1"><a class="reference internal" href="load_database.html">CARGAR BASE DE DATOS</a></li>
@@ -177,8 +176,8 @@
 <li class="toctree-l1"><a class="reference internal" href="descriptive_analysis.html">ANÁLISIS DESCRIPTIVO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">ANÁLISIS EXPLORATORIO</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">ANÁLISIS PREDICTIVO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conclusions.html">Conclusiones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliografía</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conclusions.html">CONCLUSIONES</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">BIBLIOGRAFÍA</a></li>
 </ul>
 
     </div>
@@ -378,9 +377,27 @@
 <p>A continuación se presenta el análisis predictivo. Realizamos una regresión lineal sobre los salarios en el tiempo, y obtuvimos predicciones salariales para 2025</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORTS</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SET PROJECT FOLDER</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_project_folder_path</span><span class="p">(</span><span class="n">start_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">target_folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="n">current_path</span> <span class="o">=</span> <span class="n">start_path</span>
+    
+    <span class="c1"># Traverse up the directory tree</span>
+    <span class="k">while</span> <span class="n">current_path</span> <span class="o">!=</span> <span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>  <span class="c1"># While not at the root directory</span>
+        <span class="k">if</span> <span class="n">current_path</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">target_folder_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">current_path</span>
+        <span class="n">current_path</span> <span class="o">=</span> <span class="n">current_path</span><span class="o">.</span><span class="n">parent</span>
+    
+    <span class="c1"># If we reached the root without finding the folder, return None</span>
+    <span class="k">return</span> <span class="kc">None</span>
+<span class="n">start_path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="n">project_folder</span> <span class="o">=</span> <span class="n">find_project_folder_path</span><span class="p">(</span><span class="n">start_path</span><span class="p">,</span> <span class="s1">&#39;ProyectoABD&#39;</span><span class="p">)</span>
+
+<span class="c1"># IMPORTS</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -391,9 +408,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span>
-
-<span class="c1"># SET PROJECT FOLDER</span>
-<span class="n">project_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
 
 <span class="c1"># LOAD LOCAL_SETUP_CONFIG FILE</span>
 <span class="n">config_path</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;local_setup_config.json&quot;</span>
@@ -434,6 +448,7 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Local configuration file loaded succesfully
+C:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\visualization_notebooks
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Project folder set to C:\Users\Sarah\Code\ProyectoABD for load_database.py
@@ -461,111 +476,774 @@ Opened database successfully
 
 <span class="c1">#postings</span>
 <span class="n">df_postings</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM postings&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="n">df_company_industries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM company_industries&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="n">df_companies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM companies&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="n">df_industries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;SELECT * FROM industries&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert &#39;listed_time&#39; from milliseconds to seconds and then to datetime</span>
-<span class="n">df_listed_time_unix</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">df_listed_time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_listed_time_unix</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># FUNCTIONS</span>
 
-<span class="c1"># Plotting the timeline</span>
+<span class="c1">#save graph as image(png)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_graph_image</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+    <span class="c1"># Specify the directory and filename</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span><span class="s1">&#39;graficas&#39;</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+    <span class="c1"># Check if the file already exists, and remove it if so</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>  <span class="c1"># Remove the existing file</span>
+    <span class="c1"># Save the plot to the specified path</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+    <span class="c1"># Optionally, you can print a message to confirm the save</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Graph saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1">#save list, dict or dataframe to .csv</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_to_csv</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+
+    <span class="n">save_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;tablas&quot;</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+    <span class="c1"># Check if the input is a DataFrame</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="c1"># Save DataFrame to CSV</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DataFrame saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check if the input is a list of lists (2D List)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>  <span class="c1"># Check if list is 2D</span>
+            <span class="c1"># Save 2D List to CSV</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerows</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;2D list saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Save flat list to CSV</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Use writerow for a single row</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;list saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Check if the input is a dictionary</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># Convert dictionary to a DataFrame and then save</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">data</span><span class="p">])</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dictionary saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unsupported data type. Only list, dictionary, or DataFrame are allowed.&quot;</span><span class="p">)</span>
+
+
+
+
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># Función para realizar la regresión lineal con las fórmulas vistas en clase</span>
+<span class="c1"># =============================================================================</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calcular_regresion_lineal</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calcula los coeficientes A y B para el modelo y = A*x + B,</span>
+<span class="sd">    usando las fórmulas:</span>
+<span class="sd">        A = (N * Σ(x_i*y_i) - Σx_i * Σy_i) / (N*Σ(x_i^2) - (Σx_i)^2)</span>
+<span class="sd">        B = (Σ(x_i^2) * Σy_i - Σx_i * Σ(x_i*y_i)) / (N*Σ(x_i^2) - (Σx_i)^2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">suma_X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">suma_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">suma_XY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">suma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">Delta</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">suma_X2</span> <span class="o">-</span> <span class="n">suma_X</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">if</span> <span class="n">Delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Delta es 0, no se puede calcular la regresión.&quot;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="n">suma_XY</span> <span class="o">-</span> <span class="n">suma_X</span> <span class="o">*</span> <span class="n">suma_y</span><span class="p">)</span> <span class="o">/</span> <span class="n">Delta</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="p">(</span><span class="n">suma_X2</span> <span class="o">*</span> <span class="n">suma_y</span> <span class="o">-</span> <span class="n">suma_X</span> <span class="o">*</span> <span class="n">suma_XY</span><span class="p">)</span> <span class="o">/</span> <span class="n">Delta</span>
+    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span>
+
+<span class="c1"># =============================================================================</span>
+<span class="c1">#Función para pronosticar la demanda de un rol utilizando regresión lineal</span>
+<span class="c1"># =============================================================================</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">forecast_role_demand</span><span class="p">(</span><span class="n">role_name</span><span class="p">,</span> <span class="n">df_role</span><span class="p">,</span> <span class="n">days_to_predict</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Aplica la regresión lineal para predecir la demanda (n° de publicaciones)</span>
+<span class="sd">    de un &#39;role_name&#39; en los próximos &#39;days_to_predict&#39; días.</span>
+<span class="sd">    </span>
+<span class="sd">    Parámetros:</span>
+<span class="sd">      - role_name: Nombre del rol.</span>
+<span class="sd">      - df_role: DataFrame filtrado para ese rol, con columnas:</span>
+<span class="sd">                 [&#39;listed_date&#39;, &#39;count&#39;].</span>
+<span class="sd">      - days_to_predict: Número de días futuros a predecir.</span>
+<span class="sd">    </span>
+<span class="sd">    Retorna un DataFrame con las fechas y la demanda pronosticada, además de los</span>
+<span class="sd">    coeficientes A y B calculados.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ordenamos por fecha</span>
+    <span class="n">df_role</span> <span class="o">=</span> <span class="n">df_role</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;listed_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="c1"># Convertimos la fecha a un índice numérico: 0 para el día mínimo</span>
+    <span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;day_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">])</span> <span class="o">-</span> 
+                             <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+                             
+    <span class="c1"># Extraemos los valores para la regresión</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;day_index&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    
+    <span class="c1"># Calculamos A y B usando la función manual</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">calcular_regresion_lineal</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    
+    <span class="c1"># Último día observado</span>
+    <span class="n">last_day</span> <span class="o">=</span> <span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;day_index&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    
+    <span class="c1"># Predecimos para los próximos &#39;days_to_predict&#39; días</span>
+    <span class="n">future_days</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">last_day</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">last_day</span> <span class="o">+</span> <span class="n">days_to_predict</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">future_pred</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">future_days</span> <span class="o">+</span> <span class="n">B</span>
+    
+    <span class="c1"># Generamos las fechas correspondientes</span>
+    <span class="n">forecast_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_role</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+                      <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">future_days</span><span class="p">]</span>
+    
+    <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;fecha&#39;</span><span class="p">:</span> <span class="n">forecast_dates</span><span class="p">,</span>
+        <span class="s1">&#39;demanda_pronosticada&#39;</span><span class="p">:</span> <span class="n">future_pred</span>
+    <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">forecast_df</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+<span class="c1">#get forecast per role</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">table_role_forecasts</span><span class="p">(</span><span class="n">role</span><span class="p">,</span><span class="n">demand_df</span><span class="p">,</span><span class="n">display_table</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1">#filtrar demand_df para el rol en cuestión</span>
+    <span class="n">df_role</span> <span class="o">=</span> <span class="n">demand_df</span><span class="p">[</span><span class="n">demand_df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">role</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_role</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1">#si apenas hay 1 o 2 puntos, no es factible hacer una regresión lineal confiable</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">No hay suficientes datos para pronosticar el rol: </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="n">forecast_df</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">forecast_role_demand</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">df_role</span><span class="p">,</span> <span class="n">days_to_predict</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">save_to_csv</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">display_table</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Pronóstico para el rol &#39;</span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2">&#39;:&quot;</span><span class="p">)</span>
+        <span class="n">display</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">forecast_df</span>
+
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># 7)VISUALIZACIÓN PARA CADA UNO DE LOS ROLES DEL TOP 5</span>
+<span class="c1"># =============================================================================</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">graph_role_forecasts</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">demand_df</span><span class="p">,</span> <span class="n">image_name</span><span class="o">=</span><span class="s1">&#39;grafico_analisis_predictivo.png&#39;</span><span class="p">,</span><span class="n">display_table</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="n">forecast_df</span> <span class="o">=</span> <span class="n">table_role_forecasts</span><span class="p">(</span><span class="n">role</span><span class="p">,</span><span class="n">demand_df</span><span class="p">,</span><span class="n">display_table</span><span class="o">=</span><span class="n">display_table</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">forecast_df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">No hay suficientes datos para pronosticar el rol: </span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="c1"># Filtrar los datos históricos para el rol actual</span>
+    <span class="n">df_hist</span> <span class="o">=</span> <span class="n">demand_df</span><span class="p">[</span><span class="n">demand_df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">role</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">])</span>
+    <span class="n">df_hist</span> <span class="o">=</span> <span class="n">df_hist</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;listed_date&#39;</span><span class="p">)</span>
+    <span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;day_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">],</span> <span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Datos reales&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">],</span> <span class="n">df_hist</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">[</span><span class="s1">&#39;fecha&#39;</span><span class="p">],</span> <span class="n">forecast_df</span><span class="p">[</span><span class="s1">&#39;demanda_pronosticada&#39;</span><span class="p">],</span> 
+                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Pronóstico&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">forecast_df</span><span class="p">[</span><span class="s1">&#39;fecha&#39;</span><span class="p">],</span> <span class="n">forecast_df</span><span class="p">[</span><span class="s1">&#39;demanda_pronosticada&#39;</span><span class="p">],</span> 
+             <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Demanda histórica y pronosticada para el rol &#39;</span><span class="si">{</span><span class="n">role</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fecha&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Número de publicaciones&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="c1"># Save graph as png</span>
+    <span class="n">save_graph_image</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ms&#39;</span><span class="p">)</span>
+<span class="n">timestamps</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">//</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>
+
+<span class="c1">#Cálculo de los cuartiles y el rango intercuartil (IQR)</span>
+<span class="n">Q1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">Q3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">timestamps</span><span class="p">,</span> <span class="mi">75</span><span class="p">)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+
+<span class="c1"># Definir límites para detectar valores atípicos</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+
+<span class="c1"># Filtrar el dataframe eliminando valores atípicos en &#39;listed_time&#39;</span>
+<span class="n">df_postings_clean</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[(</span><span class="n">timestamps</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">timestamps</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)]</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_listed_time</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_postings</span><span class="p">),</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Plot points at y=1 for each entry</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>  <span class="c1"># Remove y-axis ticks as it&#39;s not necessary for this plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Tiempo de publicación&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_postings_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_postings_clean</span><span class="p">),</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Puntos en la línea de tiempo</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>  <span class="c1"># Ocultar los ticks del eje Y</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Fecha de publicación&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Publicaciones por fecha&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>  <span class="c1"># Rotate x-axis labels for better readability</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-
-<span class="c1"># Show the graph</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/3bf3d6a657d6da3fd1b4bf0e0126b5d190b54956be1cbb37deafb5638270d439.png" src="../_images/3bf3d6a657d6da3fd1b4bf0e0126b5d190b54956be1cbb37deafb5638270d439.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply dropna() to the entire dataframe to ensure X and y are aligned</span>
-<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_postings</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">,</span> <span class="s1">&#39;normalized_salary&#39;</span><span class="p">])</span>
-
-<span class="c1"># Convert &#39;listed_time&#39; from milliseconds to seconds (by dividing by 1000)</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>  <span class="c1"># Convert to seconds</span>
-
-<span class="c1"># Filter the data to only include listings between 2024-03-20 and 2024-04-20</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
-<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-03-20&#39;</span><span class="p">))</span> <span class="o">&amp;</span> 
-                    <span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-04-20&#39;</span><span class="p">))]</span>
-
-<span class="c1"># Prepare the features (independent variables) and target (dependent variable)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">//</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>  <span class="c1"># Convert to Unix timestamp in seconds</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span>
-
-<span class="c1"># Initialize the linear regression model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-
-<span class="c1"># Fit the model on the data</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="c1"># Predict for May 2024 (using the Unix timestamp for May 1, 2024)</span>
-<span class="n">may_2024_timestamp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-05-01&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
-
-<span class="c1"># Make a prediction for May 2024</span>
-<span class="n">predicted_salary_may</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">may_2024_timestamp</span><span class="p">]]))</span>
-
-<span class="c1"># Print the prediction for May 2024</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Salario promedio proyectado para Mayo 2024: </span><span class="si">{</span><span class="n">predicted_salary_may</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Plotting the salary trend over time (training data and prediction for May 2024)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-
-<span class="c1"># Plot the historical data (March 20, 2024 - April 20, 2024)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Datos Históricos&#39;</span><span class="p">)</span>
-
-<span class="c1"># Plot the predicted salary for May 2024 (as a point on the timeline)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-05-01&#39;</span><span class="p">),</span> <span class="n">predicted_salary_may</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Salario promedio proyectado para Mayo 2024&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-<span class="c1"># Formatting the plot</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Fecha&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salario predecido&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Tendencia en salarios (2024-03-20 a 2024-05-01)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 
-<span class="c1"># Show the graph</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># Specify the directory and filename</span>
+<span class="n">save_graph_image</span><span class="p">(</span><span class="s1">&#39;analisis_predictivo_publicaciones_por_fecha.png&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># Mostrar gráfico</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Sarah\AppData\Local\Temp\ipykernel_16580\4287404388.py:5: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df_clean[&#39;listed_time&#39;] = df_clean[&#39;listed_time&#39;].apply(lambda x: x / 1000)  # Convert to seconds
-C:\Users\Sarah\AppData\Local\Temp\ipykernel_16580\4287404388.py:8: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df_clean[&#39;listed_time&#39;] = pd.to_datetime(df_clean[&#39;listed_time&#39;], unit=&#39;s&#39;)
-c:\Users\Sarah\Code\ProyectoABD\.venv\Lib\site-packages\sklearn\utils\validation.py:2739: UserWarning: X does not have valid feature names, but LinearRegression was fitted with feature names
-  warnings.warn(
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_publicaciones_por_fecha.png
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Salario promedio proyectado para Mayo 2024: 181436.13
+<img alt="../_images/e64aa72b0cc201bf86946bf02f58ad6029d7533949c2b717bcf35e784857faf9.png" src="../_images/e64aa72b0cc201bf86946bf02f58ad6029d7533949c2b717bcf35e784857faf9.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#filtrar datos de marzo 20 a abril 20 de 2024 </span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_postings</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">,</span> <span class="s1">&#39;normalized_salary&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ms&#39;</span><span class="p">)</span>
+
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-04-01&#39;</span><span class="p">))</span> <span class="o">&amp;</span> 
+                    <span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-04-20&#39;</span><span class="p">))]</span>
+
+<span class="c1">#eliminamos valores atípicos en &#39;normalized_salary&#39; usando IQR</span>
+<span class="n">Q1</span><span class="p">,</span> <span class="n">Q3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">])</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+<span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span><span class="p">,</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> 
+                    <span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)]</span>
+
+
+<span class="n">df_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">//</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span>  
+
+<span class="c1">#entrenamos modelo de regresión lineal</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;normalized_salary&#39;</span><span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1">#predicción de salario para el 1 de mayo de 2024</span>
+<span class="n">may_2024_timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-05-01&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
+<span class="n">predicted_salary_may</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">may_2024_timestamp</span><span class="p">]],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Salario promedio proyectado para Mayo 2024: </span><span class="si">{</span><span class="n">predicted_salary_may</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Datos Históricos&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">predicted_salary_may</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Predicción: </span><span class="si">{</span><span class="n">predicted_salary_may</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2024-05-01&#39;</span><span class="p">),</span> <span class="n">predicted_salary_may</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Fecha&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Salarios en dólares&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Predicción de salario para mayo&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="c1"># Specify the directory and filename</span>
+<span class="n">save_graph_image</span><span class="p">(</span><span class="s1">&#39;analisis_predictivo_prediccion_salario.png&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/ed7314d0abb5e993c49295a03e79fe0b00321ded6ccac59af8a326419f61a8d9.png" src="../_images/ed7314d0abb5e993c49295a03e79fe0b00321ded6ccac59af8a326419f61a8d9.png" />
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Salario promedio proyectado para Mayo 2024: 91514.54
+Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_prediccion_salario.png
+</pre></div>
+</div>
+<img alt="../_images/59c6b437a9a9df725c892d1ddbe09eefc75b4aea8883efff037169fd9af538ab.png" src="../_images/59c6b437a9a9df725c892d1ddbe09eefc75b4aea8883efff037169fd9af538ab.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =============================================================================</span>
+<span class="c1"># 1)OBTENEMOS DE NUEVO EL TOP 10 INDUSTRIAS CON MAYOR NÚMERO DE EMPRESAS</span>
+<span class="c1"># =============================================================================</span>
+<span class="n">industry_counts</span> <span class="o">=</span> <span class="n">df_company_industries</span><span class="p">[</span><span class="s1">&#39;industry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">top_10_industries</span> <span class="o">=</span> <span class="n">industry_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">save_to_csv</span><span class="p">(</span><span class="n">top_10_industries</span><span class="p">,</span><span class="s1">&#39;top_industrias_por_cantidad_empresas&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Las 10 industrias con más empresas son:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">top_10_industries</span><span class="p">)</span>
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># 2)FILTRAMOS PUBLICACIONES PARA SOLO INCLUIR LAS DE ESAS 10 INDUSTRIAS</span>
+<span class="c1"># =============================================================================</span>
+<span class="c1">#Hacemos merge para saber la industria de la compañía que publicó el empleo</span>
+<span class="n">df_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_postings</span><span class="p">,</span> 
+                     <span class="n">df_company_industries</span><span class="p">,</span> 
+                     <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> 
+                     <span class="n">on</span><span class="o">=</span><span class="s1">&#39;company_id&#39;</span><span class="p">)</span>
+
+<span class="c1">#Nos quedamos únicamente con las filas cuya industria está en el top 10</span>
+<span class="n">df_merged_top</span> <span class="o">=</span> <span class="n">df_merged</span><span class="p">[</span><span class="n">df_merged</span><span class="p">[</span><span class="s1">&#39;industry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">top_10_industries</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># 3)CREAMOS UNA COLUMNA DE FECHA (SIN HORA) PARA AGRUPAR POR DÍA</span>
+<span class="c1"># =============================================================================</span>
+<span class="c1">#Convertimos &#39;listed_time&#39; a tipo datetime (en milisegundos, si así está almacenado)</span>
+<span class="n">df_merged_top</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_merged_top</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+
+<span class="c1">#Eliminamos registros sin fecha válida</span>
+<span class="n">df_merged_top</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#Creamos la columna &#39;listed_date&#39; para agrupar por día</span>
+<span class="n">df_merged_top</span><span class="p">[</span><span class="s1">&#39;listed_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_merged_top</span><span class="p">[</span><span class="s1">&#39;listed_time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># 4)AGRUPAMOS PARA VER LA DEMANDA (N° DE PUBLICACIONES) POR FECHA Y POR ROL</span>
+<span class="c1"># =============================================================================</span>
+<span class="c1">#Suponiendo que el &quot;título&quot; del rol se encuentra en la columna &#39;title&#39;</span>
+<span class="n">demand_df</span> <span class="o">=</span> <span class="n">df_merged_top</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;listed_date&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># 5)IDENTIFICAMOS LOS ROLES MÁS FRECUENTES EN ESTAS INDUSTRIAS</span>
+<span class="c1">#    (POR EJEMPLO, TOP 5 O TOP 10 ROLES)</span>
+<span class="c1"># =============================================================================</span>
+<span class="n">role_counts</span> <span class="o">=</span> <span class="n">demand_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">top_5_roles</span> <span class="o">=</span> <span class="n">role_counts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>  <span class="c1"># Puedes ajustar a 10 si deseas</span>
+
+<span class="n">save_to_csv</span><span class="p">(</span><span class="n">top_5_roles</span><span class="p">,</span><span class="s1">&#39;top_roles_por_top_industrias&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Los 5 roles más frecuentes dentro de las 10 industrias con más empresas son:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">top_5_roles</span><span class="p">)</span>
+
+<span class="c1"># =============================================================================</span>
+<span class="c1"># 6)APLICAMOS EL PRONÓSTICO PARA CADA UNO DE LOS TOP ROLES</span>
+<span class="c1"># =============================================================================</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">top_5_roles</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;analisis_predictivo_roles_rol_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">table_role_forecasts</span><span class="p">(</span><span class="n">role</span><span class="p">,</span><span class="n">demand_df</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">graph_role_forecasts</span><span class="p">(</span><span class="n">role</span><span class="p">,</span><span class="n">demand_df</span><span class="o">=</span><span class="n">demand_df</span><span class="p">,</span><span class="n">image_name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>list saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\top_industrias_por_cantidad_empresas.csv
+Las 10 industrias con más empresas son:
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Staffing and Recruiting&#39;,
+ &#39;IT Services and IT Consulting&#39;,
+ &#39;Hospitals and Health Care&#39;,
+ &#39;Software Development&#39;,
+ &#39;Financial Services&#39;,
+ &#39;Construction&#39;,
+ &#39;Advertising Services&#39;,
+ &#39;Non-profit Organizations&#39;,
+ &#39;Real Estate&#39;,
+ &#39;Business Consulting and Services&#39;]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>list saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\top_roles_por_top_industrias.csv
+
+Los 5 roles más frecuentes dentro de las 10 industrias con más empresas son:
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Sales Manager&#39;,
+ &#39;Project Manager&#39;,
+ &#39;Registered Nurse&#39;,
+ &#39;Administrative Assistant&#39;,
+ &#39;Executive Assistant&#39;]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\analisis_predictivo_roles_rol_1.csv
+
+Pronóstico para el rol &#39;Sales Manager&#39;:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fecha</th>
+      <th>demanda_pronosticada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-04-20</td>
+      <td>59.063805</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-04-21</td>
+      <td>56.520882</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-04-22</td>
+      <td>53.977958</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-04-23</td>
+      <td>51.435035</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-04-24</td>
+      <td>48.892111</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2024-04-25</td>
+      <td>46.349188</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2024-04-26</td>
+      <td>43.806265</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_roles_rol_1.png
+</pre></div>
+</div>
+<img alt="../_images/916290c229f7514ba6ea53c96ab10b419fdd315a82c90f053b4128c460de2144.png" src="../_images/916290c229f7514ba6ea53c96ab10b419fdd315a82c90f053b4128c460de2144.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\analisis_predictivo_roles_rol_2.csv
+
+Pronóstico para el rol &#39;Project Manager&#39;:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fecha</th>
+      <th>demanda_pronosticada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-04-20</td>
+      <td>43.440966</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-04-21</td>
+      <td>46.016100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-04-22</td>
+      <td>48.591234</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-04-23</td>
+      <td>51.166369</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-04-24</td>
+      <td>53.741503</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2024-04-25</td>
+      <td>56.316637</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2024-04-26</td>
+      <td>58.891771</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_roles_rol_2.png
+</pre></div>
+</div>
+<img alt="../_images/0147a8a5d2e1e0cbeb0e569dc9f49c4fa9eee5016ce6351fad911088a60924cb.png" src="../_images/0147a8a5d2e1e0cbeb0e569dc9f49c4fa9eee5016ce6351fad911088a60924cb.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\analisis_predictivo_roles_rol_3.csv
+
+Pronóstico para el rol &#39;Registered Nurse&#39;:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fecha</th>
+      <th>demanda_pronosticada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-04-20</td>
+      <td>35.508945</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-04-21</td>
+      <td>37.815742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-04-22</td>
+      <td>40.122540</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-04-23</td>
+      <td>42.429338</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-04-24</td>
+      <td>44.736136</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2024-04-25</td>
+      <td>47.042934</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2024-04-26</td>
+      <td>49.349732</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_roles_rol_3.png
+</pre></div>
+</div>
+<img alt="../_images/5c1ec8b0ad00f17662f7fc21d9d2adeb8881050a29d0ab3717d7cdd24df8669d.png" src="../_images/5c1ec8b0ad00f17662f7fc21d9d2adeb8881050a29d0ab3717d7cdd24df8669d.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\analisis_predictivo_roles_rol_4.csv
+
+Pronóstico para el rol &#39;Administrative Assistant&#39;:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fecha</th>
+      <th>demanda_pronosticada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-04-20</td>
+      <td>33.101574</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-04-21</td>
+      <td>35.420601</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-04-22</td>
+      <td>37.739628</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-04-23</td>
+      <td>40.058655</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-04-24</td>
+      <td>42.377682</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2024-04-25</td>
+      <td>44.696710</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2024-04-26</td>
+      <td>47.015737</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_roles_rol_4.png
+</pre></div>
+</div>
+<img alt="../_images/1893f9336392f6f5f7a4e48abbe01f0a732cb3beff706f50eb7fda1886bae08a.png" src="../_images/1893f9336392f6f5f7a4e48abbe01f0a732cb3beff706f50eb7fda1886bae08a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\tablas\analisis_predictivo_roles_rol_5.csv
+
+Pronóstico para el rol &#39;Executive Assistant&#39;:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fecha</th>
+      <th>demanda_pronosticada</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2024-04-20</td>
+      <td>27.663685</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2024-04-21</td>
+      <td>29.228086</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2024-04-22</td>
+      <td>30.792487</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2024-04-23</td>
+      <td>32.356887</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2024-04-24</td>
+      <td>33.921288</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2024-04-25</td>
+      <td>35.485689</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2024-04-26</td>
+      <td>37.050089</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Graph saved to c:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\graficas\analisis_predictivo_roles_rol_5.png
+</pre></div>
+</div>
+<img alt="../_images/e40fc436050af944466791bb5caa66d25a4f1c447aead37a17ddd3071821d99d.png" src="../_images/e40fc436050af944466791bb5caa66d25a4f1c447aead37a17ddd3071821d99d.png" />
+</div>
+</div>
+<p>Como vimos anteriormente en las 10 industrias con mayor cantidad de empresas, existe una alta actividad en áreas de reclutamiento, tecnología, salud y servicios financieros, lo que sugiere que estos sectores están altamente competitivos y son de gran relevancia en el mercado laboral actual.
+Los 5 roles más frecuentes dentro de estas industrias son:</p>
+<ul class="simple">
+<li><p>Sales Manager</p></li>
+<li><p>Project Manager</p></li>
+<li><p>Registered Nurse</p></li>
+<li><p>Administrative Assistant</p></li>
+<li><p>Executive Assistant</p></li>
+</ul>
+<p>Esta distribución muestra que los puestos gerenciales (Sales Manager y Project Manager) y de soporte administrativo (Administrative Assistant y Executive Assistant) tienen una alta presencia, junto con un rol técnico-especializado en salud (Registered Nurse). Esto puede reflejar tanto la necesidad de liderazgo y coordinación en sectores dinámicos como la demanda constante en el área de la salud.<br />
+Utilizando una regresión lineal simple, se han generado las siguientes proyecciones para un horizonte de 7 días:<br />
+Sales Manager: La proyección muestra una tendencia descendente; pues el 20 de abril de 2024 se pronostican 59.06 publicaciones, mientras que el 26 de abril se pronostican 43.81.
+La pendiente negativa obtenida en la regresión indica que, durante el periodo analizado, la demanda para el rol de Sales Manager está en declive. Esto podría deberse a factores como saturación del mercado, cambios en la estrategia de contratación o una disminución temporal en las necesidades de ventas.<br />
+Project Manager: La demanda proyectada crece de 43.44 a 58.89 publicaciones en el mismo intervalo. Una pendiente positiva sugiere que hay una tendencia creciente en la contratación de Project Manager, lo que podría reflejar una mayor inversión en gestión de proyectos o la necesidad de coordinación en iniciativas empresariales en sectores tecnológicos o consultoría.
+Registered Nurse: Se observa un aumento gradual de 35.51 a 49.35 publicaciones. Este comportamiento es coherente con el sector salud, donde un crecimiento en la demanda de enfermeros puede estar impulsado por el aumento de la población, cambios en la política sanitaria o la expansión de servicios hospitalarios.<br />
+Administrative Assistant: La proyección pasa de 33.10 a 47.02 publicaciones. La tendencia ascendente indica una mayor necesidad de personal de apoyo administrativo, lo que puede ser consecuencia de la expansión de las operaciones empresariales en las industrias analizadas.<br />
+Executive Assistant: La demanda se incrementa de 27.66 a 37.05 publicaciones. Similar a los asistentes administrativos, la demanda creciente de Executive Assistant puede reflejar la necesidad de soporte especializado para altos ejecutivos en empresas con estructuras organizacionales complejas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cerrar la conexión si ya no se necesita</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Cerrar la conexión si ya no se necesita</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="ne">NameError</span>: name &#39;conn&#39; is not defined
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -614,7 +1292,7 @@ c:\Users\Sarah\Code\ProyectoABD\.venv\Lib\site-packages\sklearn\utils\validation
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Conclusiones</p>
+        <p class="prev-next-title">CONCLUSIONES</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -634,7 +1312,7 @@ c:\Users\Sarah\Code\ProyectoABD\.venv\Lib\site-packages\sklearn\utils\validation
   <div class="footer-item">
     
 <p class="component-author">
-By Narly Cipagauta, Karla Murillo, Sarah Coral, Stiven Sánchez
+By Sarah Coral, Narly Cipagauta, Karla Murillo, Stiven Sánchez
 </p>
 
   </div>

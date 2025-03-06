@@ -37,7 +37,7 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['# IMPORTS', 'import sys', 'import json', 'from pathlib import Path', 'import sqlite3']
+['# SET PROJECT FOLDER', 'from pathlib import Path', 'def find_project_folder_path(start_path: Path, target_folder_name: str) -> Path:', '    current_path = start_path', '    ']
 ...
 ['if linkedindatabase_path.exists():', '    conn = sqlite3.connect(linkedindatabase_path)', '    print("Opened database successfully")', 'else:', '    raise FileNotFoundError(f"Error: {linkedindatabase_path} not found")']
 -------------------

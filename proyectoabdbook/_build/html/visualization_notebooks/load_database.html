@@ -169,7 +169,6 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Jupyter Notebook files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">CARGAR BASE DE DATOS</a></li>
@@ -177,8 +176,8 @@
 <li class="toctree-l1"><a class="reference internal" href="descriptive_analysis.html">ANÁLISIS DESCRIPTIVO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="exploratory_analysis.html">ANÁLISIS EXPLORATORIO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="predictive_analysis.html">ANÁLISIS PREDICTIVO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conclusions.html">Conclusiones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliografía</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conclusions.html">CONCLUSIONES</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">BIBLIOGRAFÍA</a></li>
 </ul>
 
     </div>
@@ -377,9 +376,22 @@
 <h1>CARGAR BASE DE DATOS<a class="headerlink" href="#cargar-base-de-datos" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#SET PROJECT FOLDER MAIN DIRECTORY</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SET PROJECT FOLDER MAIN DIRECTORY</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="n">project_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_project_folder_path</span><span class="p">(</span><span class="n">start_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">target_folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="n">current_path</span> <span class="o">=</span> <span class="n">start_path</span>
+    
+    <span class="c1"># Traverse up the directory tree</span>
+    <span class="k">while</span> <span class="n">current_path</span> <span class="o">!=</span> <span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>  <span class="c1"># While not at the root directory</span>
+        <span class="k">if</span> <span class="n">current_path</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">target_folder_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">current_path</span>
+        <span class="n">current_path</span> <span class="o">=</span> <span class="n">current_path</span><span class="o">.</span><span class="n">parent</span>
+    
+    <span class="c1"># If we reached the root without finding the folder, return None</span>
+    <span class="k">return</span> <span class="kc">None</span>
+<span class="n">start_path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="n">project_folder</span> <span class="o">=</span> <span class="n">find_project_folder_path</span><span class="p">(</span><span class="n">start_path</span><span class="p">,</span> <span class="s1">&#39;ProyectoABD&#39;</span><span class="p">)</span>
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project folder set to </span><span class="si">{</span><span class="n">project_folder</span><span class="si">}</span><span class="s2"> for load_database.ipynb&quot;</span><span class="p">)</span>
 <span class="n">scripts_folder</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;Scripts&quot;</span>
 
@@ -389,17 +401,14 @@
 
 <span class="c1"># MODULE IMPORTS</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">scripts_folder</span><span class="p">))</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">test_script</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">load_database</span>
 
-<span class="n">test_script</span><span class="o">.</span><span class="n">do_something</span><span class="p">()</span>
 <span class="n">load_database</span><span class="o">.</span><span class="n">load_db</span><span class="p">(</span><span class="n">project_folder</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Project folder set to C:\Users\Sarah\Code\ProyectoABD for load_database.ipynb
-test script loaded!
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Project folder set to C:\Users\Sarah\Code\ProyectoABD for load_database.py
@@ -475,7 +484,7 @@ Database already loaded!
   <div class="footer-item">
     
 <p class="component-author">
-By Narly Cipagauta, Karla Murillo, Sarah Coral, Stiven Sánchez
+By Sarah Coral, Narly Cipagauta, Karla Murillo, Stiven Sánchez
 </p>
 
   </div>

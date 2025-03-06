@@ -169,7 +169,6 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Jupyter Notebook files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="markdown-notebooks.html">Notebooks with MyST Markdown</a></li>
 <li class="toctree-l1"><a class="reference internal" href="load_database.html">CARGAR BASE DE DATOS</a></li>
@@ -177,8 +176,8 @@
 <li class="toctree-l1"><a class="reference internal" href="descriptive_analysis.html">ANÁLISIS DESCRIPTIVO</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">ANÁLISIS EXPLORATORIO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="predictive_analysis.html">ANÁLISIS PREDICTIVO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="conclusions.html">Conclusiones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliografía</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conclusions.html">CONCLUSIONES</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">BIBLIOGRAFÍA</a></li>
 </ul>
 
     </div>
@@ -390,7 +389,23 @@
 <p>A continuación se presentan algunos resultados del análisis exploratorio de la base de datos</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#IMPORTS</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SET PROJECT FOLDER</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_project_folder_path</span><span class="p">(</span><span class="n">start_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">target_folder_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="n">current_path</span> <span class="o">=</span> <span class="n">start_path</span>
+    
+    <span class="c1"># Traverse up the directory tree</span>
+    <span class="k">while</span> <span class="n">current_path</span> <span class="o">!=</span> <span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="p">:</span>  <span class="c1"># While not at the root directory</span>
+        <span class="k">if</span> <span class="n">current_path</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">target_folder_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">current_path</span>
+        <span class="n">current_path</span> <span class="o">=</span> <span class="n">current_path</span><span class="o">.</span><span class="n">parent</span>
+    
+    <span class="c1"># If we reached the root without finding the folder, return None</span>
+    <span class="k">return</span> <span class="kc">None</span>
+<span class="n">start_path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="n">project_folder</span> <span class="o">=</span> <span class="n">find_project_folder_path</span><span class="p">(</span><span class="n">start_path</span><span class="p">,</span> <span class="s1">&#39;ProyectoABD&#39;</span><span class="p">)</span>
+
+<span class="c1">#IMPORTS</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -400,9 +415,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Markdown</span>
-
-<span class="c1"># SET PROJECT FOLDER</span>
-<span class="n">project_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
 
 <span class="c1"># LOAD LOCAL_SETUP_CONFIG FILE</span>
 <span class="n">config_path</span> <span class="o">=</span> <span class="n">project_folder</span> <span class="o">/</span> <span class="s2">&quot;local_setup_config.json&quot;</span>
@@ -443,6 +455,7 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Local configuration file loaded succesfully
+C:\Users\Sarah\Code\ProyectoABD\proyectoabdbook\visualization_notebooks
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Project folder set to C:\Users\Sarah\Code\ProyectoABD for load_database.py
@@ -554,7 +567,7 @@ La disparidad en los salarios entre las empresas sugiere diferencias en industri
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#top 10 companies with more job postings</span>
 
-<span class="n">top_companies_postings</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;company_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">top_companies_postings</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;company_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># Define base colors (can be any color scheme)</span>
 <span class="n">base_colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -570,7 +583,17 @@ La disparidad en los salarios entre las empresas sugiere diferencias en industri
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/6e97c0673dd37bd506c811886234dae532757927215039ab36f8db2f4469b091.png" src="../_images/6e97c0673dd37bd506c811886234dae532757927215039ab36f8db2f4469b091.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#top 10 companies with more job postings</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">top_companies_postings</span> <span class="o">=</span> <span class="n">df_postings</span><span class="p">[</span><span class="s1">&#39;company_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Define base colors (can be any color scheme)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">base_colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;df_postings&#39; is not defined
+</pre></div>
+</div>
 </div>
 </div>
 <p>Liberty Healthcare and Rehabilitation Services y The Job Network lideran en cantidad de ofertas de trabajo.
@@ -774,7 +797,7 @@ Las habilidades peor remuneradas incluyen Atención al Cliente, Administración 
   <div class="footer-item">
     
 <p class="component-author">
-By Narly Cipagauta, Karla Murillo, Sarah Coral, Stiven Sánchez
+By Sarah Coral, Narly Cipagauta, Karla Murillo, Stiven Sánchez
 </p>
 
   </div>

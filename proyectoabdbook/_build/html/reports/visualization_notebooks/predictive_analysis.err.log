@@ -39,6 +39,6 @@ Here is a preview of the cell contents:
 -------------------
 ['#DATAFRAME CREATION', '', '#numerical data', "df_num = pd.read_sql('SELECT * FROM clean_numerical_postings', conn)", '']
 ...
-["df_num = df_num[df_num['min_salary'] > 100]", "df_num = df_num[df_num['normalized_salary'] > 100]", '', '#postings', "df_postings = pd.read_sql('SELECT * FROM postings', conn)"]
+['#postings', "df_postings = pd.read_sql('SELECT * FROM postings', conn)", "df_company_industries = pd.read_sql('SELECT * FROM company_industries', conn)", "df_companies = pd.read_sql('SELECT * FROM companies', conn)", "df_industries = pd.read_sql('SELECT * FROM industries', conn)"]
 -------------------
 

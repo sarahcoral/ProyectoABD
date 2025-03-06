@@ -4,7 +4,6 @@
 format: jb-article
 root: visualization_notebooks/index
 sections:
-- file: visualization_notebooks/markdown
 - file: visualization_notebooks/notebooks
 - file: visualization_notebooks/markdown-notebooks
 - file: visualization_notebooks/load_database
